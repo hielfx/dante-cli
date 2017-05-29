@@ -8,7 +8,7 @@ all: dante-cli
 
 deps:
 	go get -u github.com/FiloSottile/gvt
-	gvt fetch
+	gvt list
 
 dante-cli:
 	echo "Building dante-cli"
@@ -26,7 +26,7 @@ dist: deps dist-clean
 	mkdir -p dist/linux/armhf && GOOS=linux GOARCH=arm GOARM=6 go build -ldflags "$(LDFLAGS)" -o dist/linux/armhf/dante-cli
 
 release: dist
-	tar -cvzf dante-cli-alpine-linux-amd64-$(TAG).tar.gz -C dist/alpine-linux/amd64 dante-cli
-	tar -cvzf dante-cli-linux-amd64-$(TAG).tar.gz -C dist/linux/amd64 dante-cli
-	tar -cvzf dante-cli-linux-armel-$(TAG).tar.gz -C dist/linux/armel dante-cli
-	tar -cvzf dante-cli-linux-armhf-$(TAG).tar.gz -C dist/linux/armhf dante-cli
+	tar -cvzf dist/dante-cli-alpine-linux-amd64-$(TAG).tar.gz -C dist/alpine-linux/amd64 dante-cli
+	tar -cvzf dist/dante-cli-linux-amd64-$(TAG).tar.gz -C dist/linux/amd64 dante-cli
+	tar -cvzf dist/dante-cli-linux-armel-$(TAG).tar.gz -C dist/linux/armel dante-cli
+	tar -cvzf dist/dante-cli-linux-armhf-$(TAG).tar.gz -C dist/linux/armhf dante-cli

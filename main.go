@@ -17,6 +17,8 @@ const defaultWaitRetryInterval = time.Second
 type sliceVar []string
 type hostFlagsVar []string
 
+var logger = log.New(os.Stderr, "", 0)
+
 type Context struct {
 	Values map[string]interface{}
 }
@@ -113,10 +115,10 @@ func main() {
 		return
 	}
 
-	if flag.NArg() == 0 && flag.NFlag() == 0 {
+	/*if flag.NArg() == 0 && flag.NFlag() == 0 {
 		usage()
 		os.Exit(1)
-	}
+	}*/
 
 	if delimsFlag != "" {
 		delims = strings.Split(delimsFlag, ":")
@@ -137,24 +139,42 @@ func main() {
 
 	log.Println(work.Values)
 
-	for _, t := range templatesFlag {
-		template, dest := t, ""
-		if strings.Contains(t, ":") {
-			parts := strings.Split(t, ":")
-			if len(parts) != 2 {
-				log.Fatalf("bad template argument: %s. expected \"/template:/dest\"", t)
-			}
-			template, dest = parts[0], parts[1]
+	if len(templatesFlag) == 0 {
+		tpl, err := loadFileOrStdin("")
+		if err != nil {
+			logError("Error occurred while loading data:", err)
 		}
 
-		fi, err := os.Stat(template)
+		err = executeTemplate(os.Stdout, tpl)
 		if err != nil {
-			log.Fatalf("unable to stat %s, error: %s", template, err)
+			logError("Error occurred while attempting to template:", err)
 		}
-		if fi.IsDir() {
-			generateDir(template, dest)
-		} else {
-			generateFile(template, dest)
+	} else {
+		for _, t := range templatesFlag {
+			template, dest := t, ""
+			if strings.Contains(t, ":") {
+				parts := strings.Split(t, ":")
+				if len(parts) != 2 {
+					log.Fatalf("bad template argument: %s. expected \"/template:/dest\"", t)
+				}
+				template, dest = parts[0], parts[1]
+			}
+
+			fi, err := os.Stat(template)
+			if err != nil {
+				log.Fatalf("unable to stat %s, error: %s", template, err)
+			}
+			if fi.IsDir() {
+				generateDir(template, dest)
+			} else {
+				generateFile(template, dest)
+			}
 		}
 	}
+
+}
+
+func logError(msg string, err error) {
+	logger.Println(msg)
+	logger.Println(err.Error())
 }
