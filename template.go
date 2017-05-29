@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -208,4 +209,16 @@ func generateDir(templateDir, destDir string) bool {
 	}
 
 	return true
+}
+
+func executeTemplate(out io.Writer, tpl *template.Template) error {
+	if err := mergo.Merge(&work.Values, work.Env()); err != nil {
+		log.Fatalf("template error: %s\n", err)
+	}
+
+	err := tpl.Execute(out, &work.Values)
+	if err != nil {
+		return fmt.Errorf("Failed to parse standard input: %v", err)
+	}
+	return nil
 }
