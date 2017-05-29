@@ -87,8 +87,7 @@ Arguments:
 
 	println(`Examples:
 `)
-	println(`   Generate /etc/nginx/nginx.conf using nginx.tmpl as a template, tail /var/log/nginx/access.log
-   and /var/log/nginx/error.log, waiting for a website to become available on port 8000 and start nginx.`)
+	println(`   Generate deployment.yml from k8b/deployment.yml`)
 	println(`
    dante-cli -template k8b/deployment.yml:deployment.yml \
               --values value.yml
