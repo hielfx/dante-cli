@@ -67,8 +67,8 @@ func calculateValues(files []string) (map[string]interface{}, error) {
 
 	}
 
-	fmt.Println("Second round...")
-	fmt.Printf("%v\n", secondRound)
+	log.Println("Second round...")
+	log.Printf("%v\n", secondRound)
 	for key, value := range secondRound {
 		v := fmt.Sprintf("%s", value)
 		k := fmt.Sprintf("%s", key)
@@ -78,7 +78,7 @@ func calculateValues(files []string) (map[string]interface{}, error) {
 		tpl.Execute(&doc, values)
 		values[key] = doc.String()
 
-		fmt.Printf("%v=%v\n", key, values[key])
+		log.Printf("%v=%v\n", key, values[key])
 	}
 
 	//fmt.Print(strings.Join(strkeys, ","))
