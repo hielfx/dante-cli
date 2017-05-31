@@ -1,7 +1,7 @@
 dante-cli ![version v0.0.1](https://img.shields.io/badge/version-v0.0.1-brightgreen.svg) ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 =============
 
-A simple CLI templating tool written in golang. I created this because I wanted something that was more powerful than envsubt to use when templating files on the command line.
+A simple CLI templating tool written in golang. I created this because I wanted something that was more simple than envsubt to use when templating files on the command line to deploy Openshift, Kubernetes, Docker Swarm.
 
 ## Author
 

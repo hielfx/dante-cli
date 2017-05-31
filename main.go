@@ -133,7 +133,7 @@ func main() {
 		files = append(files, t)
 	}
 	work = Context{}
-	work.Values, _ = loadValues(files)
+	//work.Values, _ = loadValues(files)
 
 	work.Values, _ = calculateValues(files)
 
