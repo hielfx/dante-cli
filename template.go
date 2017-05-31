@@ -201,11 +201,15 @@ func generateDir(templateDir, destDir string) bool {
 	}
 
 	for _, file := range files {
-		if destDir == "" {
-			generateFile(filepath.Join(templateDir, file.Name()), "")
-		} else {
-			generateFile(filepath.Join(templateDir, file.Name()), filepath.Join(destDir, file.Name()))
+
+		if !file.IsDir() {
+			if destDir == "" {
+				generateFile(filepath.Join(templateDir, file.Name()), "")
+			} else {
+				generateFile(filepath.Join(templateDir, file.Name()), filepath.Join(destDir, file.Name()))
+			}
 		}
+
 	}
 
 	return true
