@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	"github.com/imdario/mergo"
@@ -46,14 +47,38 @@ func calculateValues(files []string) (map[string]interface{}, error) {
 		//strvalues[i] =  value.(
 	}*/
 
+	//var secondRound map[string]string{}
+
+	secondRound := map[string]string{}
+
 	for key, value := range values {
-		var doc bytes.Buffer
+
 		v := fmt.Sprintf("%s", value)
 		k := fmt.Sprintf("%s", key)
 
+		var doc bytes.Buffer
 		tpl, _ := loadString(k, v)
 		tpl.Execute(&doc, values)
 		values[key] = doc.String()
+
+		if strings.Contains(v, "{{") {
+			secondRound[key] = v
+		}
+
+	}
+
+	fmt.Println("Second round...")
+	fmt.Printf("%v\n", secondRound)
+	for key, value := range secondRound {
+		v := fmt.Sprintf("%s", value)
+		k := fmt.Sprintf("%s", key)
+
+		var doc bytes.Buffer
+		tpl, _ := loadString(k, v)
+		tpl.Execute(&doc, values)
+		values[key] = doc.String()
+
+		fmt.Printf("%v=%v\n", key, values[key])
 	}
 
 	//fmt.Print(strings.Join(strkeys, ","))
